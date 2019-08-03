@@ -50,6 +50,15 @@ stdenv.mkDerivation rec {
         url = https://github.com/openssh/openssh-portable/commit/6010c0303a422a9c5fa8860c061bf7105eb7f8b2.patch;
         sha256 = "0q27i9ymr97yb628y44qi4m11hk5qikb1ji1vhvax8hp18lwskds";
       })
+
+      # These two security patches are from the Debian OpenSSH package, taken from the debian/patches directory in the http://deb.debian.org/debian/pool/main/o/openssh/openssh_7.9p1-10.debian.tar.xz archive
+      # CVE-2019-6111
+      # See https://security-tracker.debian.org/tracker/CVE-2019-6111 for details
+      ./check-filenames-in-scp-client.patch
+
+      # CVE-2019-6109
+      # See https://security-tracker.debian.org/tracker/CVE-2019-6109 for details
+      ./sanitize-scp-filenames-via-snmprintf.patch
     ]
     ++ optional withGssapiPatches (assert withKerberos; gssapiPatch);
 
