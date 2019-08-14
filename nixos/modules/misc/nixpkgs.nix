@@ -130,7 +130,6 @@ in
           [
             (self: super: {
               openssh = super.openssh.override {
-                hpnSupport = true;
                 kerberos = self.libkrb5;
               };
             })

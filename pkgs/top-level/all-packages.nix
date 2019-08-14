@@ -5125,12 +5125,15 @@ in
 
   openssh =
     callPackage ../tools/networking/openssh {
-      hpnSupport = false;
       etcDir = "/etc/ssh";
       pam = if stdenv.isLinux then pam else null;
     };
 
-  openssh_hpn = pkgs.appendToName "with-hpn" (openssh.override { hpnSupport = true; });
+  openssh_hpn =
+    callPackage ../tools/networking/openssh_hpn {
+      etcDir = "/etc/ssh";
+      pam = if stdenv.isLinux then pam else null;
+    };
 
   openssh_gssapi = pkgs.appendToName "with-gssapi" (openssh.override {
     withGssapiPatches = true;
