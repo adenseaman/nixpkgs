@@ -1,6 +1,5 @@
 { stdenv, fetchurl, fetchpatch, zlib, openssl, libedit, pkgconfig, pam, autoreconfHook
 , etcDir ? null
-, hpnSupport ? false
 , withKerberos ? true
 , withGssapiPatches ? false
 , kerberos
@@ -22,15 +21,9 @@ in
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "openssh-${version}";
-  version = if hpnSupport then "7.8p1" else "7.9p1";
+  version = "7.9p1";
 
-  src = if hpnSupport then
-      fetchurl {
-        url = "https://github.com/rapier1/openssh-portable/archive/hpn-KitchenSink-7_8_P1.tar.gz";
-        sha256 = "05q5hxx7fzcgd8a5i0zk4fwvmnz4xqk04j489irnwm7cka7xdqxw";
-      }
-    else
-      fetchurl {
+  src = fetchurl {
         url = "mirror://openbsd/OpenSSH/portable/${name}.tar.gz";
         sha256 = "1b8sy6v0b8v4ggmknwcqx3y1rjcpsll0f1f8f4vyv11x4ni3njvb";
       };
@@ -72,7 +65,6 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ zlib openssl libedit pam ]
     ++ optional withKerberos kerberos
-    ++ optional hpnSupport autoreconfHook
     ;
 
   preConfigure = ''
